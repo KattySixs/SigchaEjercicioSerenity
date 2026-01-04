@@ -7,4 +7,5 @@ Feature: Login a SouceDemo
     Given que el usuario abre el portal de login SauceDemo
     When ingresa su usuario "standard_user" y contraseña "secret_sauce" correctamente
     Then Visualiza la página de productos
+    And  Agregar Productos al carrito de compras
     
