@@ -1,0 +1,28 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "terminal.integrated.profiles.windows": {
+        "Command Prompt": {
+            "path": "C:\\Windows\\System32\\cmd.exe",
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        }
+    },
+    "cucumberautocomplete.steps": [
+        "src/test/java/**/*.java",
+        "src/test/java/com/pichincha/automationtest/glue/**/*.java"
+    ],
+    "cucumberautocomplete.syncfeatures": "src/test/resources/features/**/*.feature",
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "cucumberautocomplete.smartSnippets": true,
+    "cucumberautocomplete.stepsInvariants": true,
+    "cucumberautocomplete.gherkinDefinitionPart": "(Given|When|Then)\\(",
+    "cucumberautocomplete.stepRegExSymbol": "\"",
+    "files.associations": {
+        "*.feature": "cucumber"
+    }
+}
