@@ -1,0 +1,39 @@
+CONCLUSIONES Y HALLAZGOS - Ejercicio SauceDemo con Serenity Screenplay
+
+Resumen ejecutivo
+- Se implementó y validó la lectura de credenciales desde un archivo (`credentials.properties`) para el flujo de login, eliminando la necesidad de pasar usuario y contraseña desde el feature.
+- Se mejoró la estabilidad del localizador de confirmación de compra usando el atributo `data-test`.
+- Se corrigieron varias inconsistencias en Tasks y Step Definitions (nombres de métodos, imports innecesarios y anotaciones mal escritas) y se añadió manejo de errores básicos en la carga de propiedades.
+
+Hallazgos técnicos
+1. Selectores iniciales por texto eran frágiles. Se sustituyeron por selectores CSS basados en `data-test` (más robustos).
+2. Varios archivos de tasks/glue contenían imports no usados o métodos/clases no referenciados — eran advertencias pero se limpiaron para mayor claridad.
+3. El flujo de login inicialmente dependía de parámetros en los features; esto hacía más difícil parametrizar en CI. Se centralizó la configuración en `credentials.properties`.
+4. No se ejecutó la suite en runtime durante las modificaciones (espera confirmación) — todas las modificaciones fueron verificadas estáticamente y compiladas localmente (sin errores críticos).
+
+Errores encontrados y correcciones realizadas
+- `TXT_CONFIRMATION` en `CheckoutPageObject.java`: reemplazado por `By.cssSelector("h2[data-test='complete-header']")`.
+- `ChekOut.java`: corregidos imports y referencias para usar `CheckoutPageObject` y sus targets (BTN_CHECKOUT, INPUT_FIRSTNAME, etc.).
+- `ConfirmacionCompra.java`: eliminado import innecesario y robustecida la comparación del texto usando `trim()` y `equalsIgnoreCase()`.
+- `ComprarProductos.java`: corregida la anotación `@Then` y la aserción final para usar `ConfirmacionCompra.fueExitosa()`.
+- `LoginSauceDemo.java` y `EstablecerDatos.java`: modificado para leer credenciales desde `src/test/resources/credentials.properties` con manejo de error si el archivo no existe o las propiedades están incompletas.
+
+Recomendaciones
+- Reemplazar `credentials.properties` en repositorios públicos por variables de entorno o secret stores en CI (Azure KeyVault, GitHub Secrets, GitLab CI variables, etc.).
+- Añadir `WaitUntil` o `Ensure` en `ConfirmacionCompra` para esperar a que el elemento esté visible antes de obtener su texto.
+- Añadir tests unitarios para `Question`s y lógica que no dependa del UI para acelerar feedback local.
+- Integrar la ejecución en el pipeline en modo headless y revisar la generación del reporte HTML (`target/site/serenity/index.html`).
+
+Próximos pasos sugeridos
+1. Ejecutar la suite completa localmente (confirmar navegador y si se desea headless). Recoger logs y screenshots si hay fallos.
+2. Parametrizar la lectura de credenciales para usar variables de entorno (fallback a `credentials.properties`) para CI.
+3. Añadir manejo de retries/esperas y mejorar logging en Tasks para facilitar debugging en pipeline.
+
+Archivos clave para revisión manual
+- `src/test/resources/credentials.properties`
+- `src/main/java/automationtest/tasks/EstablecerDatos.java`
+- `src/main/java/automationtest/userinterfaces/CheckoutPageObject.java`
+- `src/main/java/automationtest/questions/ConfirmacionCompra.java`
+- `src/test/java/automationtest/glue/ComprarProductos.java`
+
+Si deseas, puedo ejecutar ahora el escenario de login y compra en Chrome (o headless) y traerte los logs y reportes; dime si autorizas la ejecución y qué navegador/mode prefieres.

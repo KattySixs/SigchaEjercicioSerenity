@@ -10,7 +10,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
-import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 
@@ -18,6 +17,7 @@ import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 
 public class LoginSauceDemo {
     @Before
+    @SuppressWarnings("unchecked")
     public void setUp(){
         OnStage.setTheStage(new Cast()); //prepara el escenario y lo inicia
         OnStage.theActorCalled("Usuario").can(BrowseTheWeb.with(Serenity.getDriver())); //Crea el actor y le asigna habilidades
@@ -28,9 +28,9 @@ public class LoginSauceDemo {
                 AbrirSauceDemo.pagina()
         );
     }
-    @When("ingresa su usuario {string} y contraseña {string} correctamente")
-    public void IniciarSesion(String usuario, String password){
-        theActorInTheSpotlight().attemptsTo(EstablecerDatos.conCredenciales(usuario, password));
+    @When("ingresa sus credenciales correctamente")
+    public void IniciarSesion(){
+        theActorInTheSpotlight().attemptsTo(EstablecerDatos.conCredencialesDesdeArchivo());
     }
     @Then("Visualiza la página de productos")
     public void ValidarAcceso(){

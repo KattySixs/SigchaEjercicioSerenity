@@ -9,7 +9,7 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
         glue = "automationtest.glue",
         plugin = {"json:build/cucumber-reports/json/cucumber.json", "summary"},
         snippets = CucumberOptions.SnippetType.CAMELCASE,
-        tags = "@AgregarProd"
+        tags = "@SauceDemo"
 )
 public class WebRunnerTest {
 }
