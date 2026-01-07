@@ -1,4 +1,4 @@
-@SauceDemo
+@LoginSauceDemo
 Feature: Login a SouceDemo
 
 
