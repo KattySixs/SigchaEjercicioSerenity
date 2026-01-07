@@ -18,6 +18,7 @@ Ejecutar la suite de pruebas Serenity BDD + Screenplay para el ejemplo SauceDemo
 	- Glue: src/test/java/automationtest/glue/
 	- Tasks: src/main/java/automationtest/tasks/
 	- Interfaces: src/main/java/automationtest/userinterfaces/
+	- Questions: src/main/java/automationtest/questions/
 	- Credenciales: src/test/resources/credentials.properties
 	- Runner principal: automationtest/runners/WebRunnerTest
 	- Reportes Serenity: target/site/serenity
