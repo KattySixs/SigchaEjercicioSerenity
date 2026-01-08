@@ -1,25 +1,6 @@
-CONCLUSIONES Y HALLAZGOS - Ejercicio SauceDemo con Serenity Screenplay
-
-Resumen ejecutivo
-- Se implementó y validó la lectura de credenciales desde un archivo (`credentials.properties`) para el flujo de login, eliminando la necesidad de pasar usuario y contraseña desde el feature.
-- Se mejoró la estabilidad del localizador de confirmación de compra usando el atributo `data-test`.
-- Se corrigieron varias inconsistencias en Tasks y Step Definitions (nombres de métodos, imports innecesarios y anotaciones mal escritas) y se añadió manejo de errores básicos en la carga de propiedades.
-
-Hallazgos técnicos
-1. Selectores iniciales por texto eran frágiles. Se sustituyeron por selectores CSS basados en `data-test` (más robustos).
-2. Varios archivos de tasks/glue contenían imports no usados o métodos/clases no referenciados — eran advertencias pero se limpiaron para mayor claridad.
-3. El flujo de login inicialmente dependía de parámetros en los features; esto hacía más difícil parametrizar en CI. Se centralizó la configuración en `credentials.properties`.
-4. No se ejecutó la suite en runtime durante las modificaciones (espera confirmación) — todas las modificaciones fueron verificadas estáticamente y compiladas localmente (sin errores críticos).
-
-Errores encontrados y correcciones realizadas
-- `TXT_CONFIRMATION` en `CheckoutPageObject.java`: reemplazado por `By.cssSelector("h2[data-test='complete-header']")`.
-- `ChekOut.java`: corregidos imports y referencias para usar `CheckoutPageObject` y sus targets (BTN_CHECKOUT, INPUT_FIRSTNAME, etc.).
-- `ConfirmacionCompra.java`: eliminado import innecesario y robustecida la comparación del texto usando `trim()` y `equalsIgnoreCase()`.
-- `ComprarProductos.java`: corregida la anotación `@Then` y la aserción final para usar `ConfirmacionCompra.fueExitosa()`.
-- `LoginSauceDemo.java` y `EstablecerDatos.java`: modificado para leer credenciales desde `src/test/resources/credentials.properties` con manejo de error si el archivo no existe o las propiedades están incompletas.
-
-Recomendaciones
-- Reemplazar `credentials.properties` en repositorios públicos por variables de entorno o secret stores en CI (Azure KeyVault, GitHub Secrets, GitLab CI variables, etc.).
-- Añadir `WaitUntil` o `Ensure` en `ConfirmacionCompra` para esperar a que el elemento esté visible antes de obtener su texto.
-- Añadir tests unitarios para `Question`s y lógica que no dependa del UI para acelerar feedback local.
-- Integrar la ejecución en el pipeline en modo headless y revisar la generación del reporte HTML (`target/site/serenity/index.html`).
+# Conclusiones del ejercicio 1: Compra SauceDemo E2E Serenity Screenplay
+- Durante el desarrollo de la automatización se definieron dos features independientes: uno para el proceso de login y otro para el flujo de compra de productos. El proceso de compra depende obligatoriamente de una autenticación previa, el login fue reutilizado como paso inicial dentro del feature de compra, evitando así la duplicación innecesaria de escenarios. Por lo tanto, para una ejecución limpia y coherente, se asignaron tags diferenciados a cada feature y el runner fue configurado para ejecutar únicamente el flujo de compra, el cual incluye el login como prerrequisito. De esta manera el login se ejecuta una sola vez, reduciendo tiempo de ejecución y alineándose a las buenas prácticas en la automatización.
+- El feature de login se mantiene para validaciones aisladas o futuras pruebas específicas, pero no se ejecutó en el flujo principal de compra para evitar redundancias.
+- Todas las ejecuciones de esta automatización se han ejecutado correctamente de extremo a extremo, validando el flujo completo de login, selección de productos, listado en carrito, formulario de compra y confirmación de compra de dos productos.
+- El uso de Screenplay está correctamente aplicado, lo cual permitió evidenciar una clara separación entre: Acciones del usuario (Tasks), Validaciones del sistema (Questions), Orquestación de escenarios (Steps).
+- El reporte de Serenity generado es muy claro, proporciona una trazabilidad completa, permitiendo revisar de forma detallada y paso a paso cada acción de los escenarios. Estos reportes incluyen evidencia clara de la ejecución exitosa y capturas visuales de los pasos ejecutados, lo que facilita el análisis tanto funcional como técnico.
