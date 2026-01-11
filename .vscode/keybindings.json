@@ -1,0 +1,7 @@
+[
+    {
+        "key": "ctrl+shift+g",
+        "command": "workbench.action.findInFiles",
+        "when": "resourceExtname == '.feature'"
+    }
+]
